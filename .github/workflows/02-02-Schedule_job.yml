@@ -1,4 +1,4 @@
-name: 02-02-Simple Workflow
+name: 02-02-Schedule-Job
 # on: workflow_dispatch
 on: 
   schedule:
