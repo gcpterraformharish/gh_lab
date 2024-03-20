@@ -1,5 +1,5 @@
 name: 02-02-Simple Workflow
-on: workflow_call
+on: workflow_dispatch
 jobs: 
   my-first-job:
     runs-on: ubuntu-latest
