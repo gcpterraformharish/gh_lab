@@ -1,1 +1,1 @@
-GitHub Actionss
+GitHub Actions
