@@ -1,5 +1,8 @@
 name: 02-02-Simple Workflow
-on: workflow_dispatch
+# on: workflow_dispatch
+on: 
+  schedule:
+    - cron:  '*/5 * * * *'
 jobs: 
   my-first-job:
     runs-on: ubuntu-latest
