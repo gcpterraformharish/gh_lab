@@ -2,10 +2,14 @@ name: 02-01-Simple Workflow
 on: workflow_dispatch
 jobs: 
   my-first-job:
-    runs-on: self-hosted
+    runs-on: [self-hosted,linux]
     steps:
       - run: echo "Hello World"
   my-second-job:
+    runs-on: [self-hosted,windows]
+    steps:
+      - run: echo "Hello World"
+  my-third-job:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Bye World"
