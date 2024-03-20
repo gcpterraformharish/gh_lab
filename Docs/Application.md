@@ -1,1 +1,1 @@
-## This is a test doc file.
+## This is a test doc file. This change is to trigger the action to apply label.
