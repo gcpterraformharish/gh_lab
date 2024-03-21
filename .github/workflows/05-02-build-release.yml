@@ -1,0 +1,68 @@
+name: 05-01-build-release
+on: workflow_dispatch
+jobs: 
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin' # See 'Supported distributions' for available options
+          java-version: '21'
+          cache: 'maven'
+      - name: Check version
+        run: |
+         java --version
+         mvn --version
+  build:
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Build with maven
+        run: mvn clean install -Dmaven.test.skip=true
+
+      - name: Upload jar to folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: hk-artifact
+          path: target/
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download web-app artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: hk-artifact
+          path: target/
+
+      - name: View downloaded content
+        run: ls -lR
+      
+      - name: Archive site content
+        uses: thedoctor0/zip-release@master
+        with:
+          filename: site.zip
+      
+      - name: Create GitHub release
+        id: Create-new-release
+        uses: actions/create-release@v1
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.run_number}}
+          release_name: App Release ${{github.run_number}}
+      
+      - name: Upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create-new-release.outputs.upload_url}}
+          asset_path: ./site.zip
+          asset_name: site-v${{github.run_number}}.zip
+          asset_content_type: application/zip
