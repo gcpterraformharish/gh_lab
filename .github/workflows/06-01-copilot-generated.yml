@@ -32,7 +32,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: hk-artifact
-        path: target/*.jar
+        path: target/
   test:
     needs: [setup,build]
     runs-on: ubuntu-latest
@@ -57,6 +57,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: hk-artifact
+        path: target/
     # - name: Setup GitHub CLI
     #   run: |
     #     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 23F3D4EA75716059
