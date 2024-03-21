@@ -13,7 +13,7 @@ jobs:
       java-version: ${{github.event.inputs.java-version}}
     steps:
     - name: Pass Java version
-      run: echo "Passed Java version is " ${{github.event.inputs.java-version}}"
+      run: echo "Passed Java version is ${{github.event.inputs.java-version}}"
   
   build:
     needs: setup
