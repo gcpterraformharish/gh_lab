@@ -65,8 +65,8 @@ jobs:
     #     sudo apt update
     #     sudo apt install gh
     - name: Create Release
-      run:
-# gh auth login --with-token <<< "${{secrets.GITHUB_TOKEN}}"
+      run: |
+        ls -lR target/
         gh release create ${{github.run_number}} ./hk-artifact/*.jar --title "Release ${{github.run_number}}" --notes "Release notes"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN}}
