@@ -1,0 +1,16 @@
+name: Run CI
+on: workflow_dispatch
+
+jobs:
+  normal_ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run normal CI
+        run: echo "Running normal CI"
+
+  push_ci:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
+    steps:
+      - name: Run PUSH CI
+        run: echo "Running PUSH only CI"
