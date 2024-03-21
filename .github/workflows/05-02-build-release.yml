@@ -1,8 +1,25 @@
 name: 05-01-build-release
-on: workflow_dispatch
+on: 
+    workflow_dispatch:
+      inputs: 
+        JAVA_VERSION:
+          type: choice 
+          description: Select Java Version
+          options: 
+            - 16
+            - 20
+          default: '20'
+            
 jobs: 
   setup:
     runs-on: ubuntu-latest
+    outputs:
+      java-version: $${{github.event.inputs.JAVA_VERSION}}
+
+
+  build:
+    runs-on: ubuntu-latest
+    needs: setup
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -11,18 +28,15 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'adopt' # See 'Supported distributions' for available options
-          java-version: '11'
+          java-version: ${{needs.setup.outputs.java-version}}
           cache: 'maven'
       - name: Check version
         run: |
          java --version
          mvn --version
-  build:
-    runs-on: ubuntu-latest
-    needs: setup
-    steps:
+
       - name: Build with maven
-        run: mvn clean install -Dmaven.test.skip=true
+        run: mvn install -Dmaven.test.skip=true
 
       - name: Upload jar to folder
         uses: actions/upload-artifact@v4
