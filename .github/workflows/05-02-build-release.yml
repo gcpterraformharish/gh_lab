@@ -8,9 +8,7 @@ on:
           options: 
             - 16
             - 20
-          default: '20'
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20=true           
+          default: '20'        
 jobs: 
   setup:
     runs-on: ubuntu-latest
