@@ -1,0 +1,75 @@
+name: Java CI Copilot
+on:
+  workflow_dispatch:
+    inputs:
+      java-version:
+        description: 'Select Java Version'
+        default: '20'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      java-version: ${{github.event.inputs.java-version}}
+    steps:
+    - name: Pass Java version
+      run: echo "Passed Java version is " ${{github.event.inputs.java-version}}"
+  
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'adopt'
+        java-version: ${{needs.setup.outputs.java-version}}
+    - name: Build with Maven
+      run: mvn clean install
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: hk-artifact
+        path: target/*.jar
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Setup JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'adopt'
+        java-version: ${{needs.setup.outputs.java-version}}
+    - name: Test with Maven
+      run: mvn test
+
+  release:
+    needs: [build, test]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: hk-artifact
+    - name: Setup GitHub CLI
+      run: |
+        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+        sudo apt-add-repository https://cli.github.com/packages
+        sudo apt update
+        sudo apt install gh
+    - name: Create Release
+      run: |
+        gh auth login --with-token <<< "${{secrets.GITHUB_TOKEN}}"
+        gh release create ${{github.run_number}} ./hk-artifact/*.jar --title "Release ${{github.run_number}}" --notes "Release notes"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN}}
+
+
+  
+
