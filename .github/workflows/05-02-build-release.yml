@@ -10,8 +10,8 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin' # See 'Supported distributions' for available options
-          java-version: '21'
+          distribution: 'adopt' # See 'Supported distributions' for available options
+          java-version: '11'
           cache: 'maven'
       - name: Check version
         run: |
