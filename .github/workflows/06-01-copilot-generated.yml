@@ -57,12 +57,12 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: hk-artifact
-    - name: Setup GitHub CLI
-      run: |
-        sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 23F3D4EA75716059
-        sudo apt-add-repository https://cli.github.com/packages
-        sudo apt update
-        sudo apt install gh
+    # - name: Setup GitHub CLI
+    #   run: |
+    #     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 23F3D4EA75716059
+    #     sudo apt-add-repository https://cli.github.com/packages
+    #     sudo apt update
+    #     sudo apt install gh
     - name: Create Release
       run: |
         gh auth login --with-token <<< "${{secrets.GITHUB_TOKEN}}"
