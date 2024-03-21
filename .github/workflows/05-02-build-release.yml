@@ -14,7 +14,7 @@ jobs:
   setup:
     runs-on: ubuntu-latest
     outputs:
-      java-version: $${{github.event.inputs.JAVA_VERSION}}
+      java-version: ${{github.event.inputs.JAVA_VERSION}}
 
 
   build:
