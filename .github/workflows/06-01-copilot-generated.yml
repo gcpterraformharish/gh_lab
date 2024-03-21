@@ -67,7 +67,7 @@ jobs:
     - name: Create Release
       run: |
         ls -lR target/
-        gh release create ${{github.run_number}} ./hk-artifact/*.jar --title "Release ${{github.run_number}}" --notes "Release notes"
+        gh release create ${{github.run_number}} target/*.jar --title "Release ${{github.run_number}}" --notes "Release notes"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN}}
 
