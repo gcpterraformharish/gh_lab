@@ -13,6 +13,8 @@ on:
 jobs: 
   setup:
     runs-on: ubuntu-latest
+    steps:
+     - run: echo "Setting java-version"
     outputs:
       java-version: ${{github.event.inputs.JAVA_VERSION}}
 
