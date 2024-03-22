@@ -5,6 +5,7 @@ on:
       
 jobs:
   docker-build:
+    environment: NonProd
     runs-on: ubuntu-latest
 
     steps:
